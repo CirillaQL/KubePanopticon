@@ -1,4 +1,7 @@
 .vscode
+dashboard/.vscode
+dashboard/node_modules
+dashboard/dist
 bin
 *.exe
 .idea

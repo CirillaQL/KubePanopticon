@@ -6,9 +6,10 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	engine.Use(gin.Recovery())
+	//engine.Use(static.Serve("/", static.LocalFile("./dashboard/dist", false)))
 	router.InitAPI(engine)
 
 	//k8sClient, err := k8s.NewK8SOutClusterClient()

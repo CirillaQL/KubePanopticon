@@ -9,7 +9,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func NodeList(c *gin.Context) {
+func List(c *gin.Context) {
 	if k8s.K8SClientset == nil {
 		logger.Log.Error("Informer can't load k8sClientset, k8sClientset is empty")
 	}
