@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/CirillaQL/kubepanopticon/pkg/service/node"
+	"github.com/CirillaQL/kubepanopticon/utils/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,20 +11,22 @@ func InitAPI(e *gin.Engine) {
 	e.Use(Cors())
 
 	baseAPI := e.Group("/api")
-	baseAPI.GET("/healthz", healthz)
+	baseAPI.GET("/health", health)
 
 	v1 := baseAPI.Group("/v1")
-	NodeRouter(v1)
 
+	// register different router
+	NodeRouter(v1)
+	logger.Log.Info("init server")
 	e.Run(":7000")
 }
 
 func NodeRouter(group *gin.RouterGroup) {
 	nodeGroup := group.Group("/nodes")
-	nodeGroup.GET("/", node.List)
+	nodeGroup.GET("/list", node.List)
 }
 
-func healthz(c *gin.Context) {
+func health(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
 	})

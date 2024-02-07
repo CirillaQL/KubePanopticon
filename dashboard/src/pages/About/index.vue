@@ -10,7 +10,7 @@ export default {
   name: "About",
 
   mounted() {
-    http.get("/nodes/").then(response => {
+    http.get("/nodes/list").then(response => {
       console.log(response.data)
     })
   }

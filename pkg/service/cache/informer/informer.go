@@ -6,10 +6,11 @@ import (
 	"github.com/CirillaQL/kubepanopticon/utils/logger"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/tools/cache"
+	"log"
 	"time"
 )
 
-var InformerMap map[string]cache.SharedIndexInformer
+var ResourceIndexInformerMap map[string]cache.SharedIndexInformer
 
 func InitInformer() error {
 	if k8s.K8SClientset == nil {
@@ -17,7 +18,7 @@ func InitInformer() error {
 		return errors.New("can't init k8s informer")
 	}
 
-	InformerMap = make(map[string]cache.SharedIndexInformer)
+	ResourceIndexInformerMap = make(map[string]cache.SharedIndexInformer)
 
 	stopCh := make(chan struct{})
 	defer close(stopCh)
@@ -25,9 +26,12 @@ func InitInformer() error {
 	sharedInformersFactory := informers.NewSharedInformerFactory(k8s.K8SClientset, 3*time.Minute)
 	nodeInformer := sharedInformersFactory.Core().V1().Nodes().Informer()
 
-	InformerMap["node"] = nodeInformer
+	ResourceIndexInformerMap["node"] = nodeInformer
 
-	nodeInformer.Run(stopCh)
+	go nodeInformer.Run(stopCh)
+	if !cache.WaitForCacheSync(stopCh, nodeInformer.HasSynced) {
+		log.Fatal("Error syncing cache")
+	}
 
 	return nil
 }
