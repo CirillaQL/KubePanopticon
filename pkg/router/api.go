@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/CirillaQL/kubepanopticon/pkg/service/cluster"
 	"github.com/CirillaQL/kubepanopticon/pkg/service/node"
 	"github.com/CirillaQL/kubepanopticon/utils/logger"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,7 @@ func InitAPI(e *gin.Engine) {
 
 	// register different router
 	NodeRouter(v1)
+	ClusterRouter(v1)
 	logger.Log.Info("init server")
 	e.Run(":7000")
 }
@@ -24,6 +26,11 @@ func InitAPI(e *gin.Engine) {
 func NodeRouter(group *gin.RouterGroup) {
 	nodeGroup := group.Group("/nodes")
 	nodeGroup.GET("/list", node.List)
+}
+
+func ClusterRouter(group *gin.RouterGroup) {
+	clusterGroup := group.Group("/cluster")
+	clusterGroup.GET("/cluster-all-pods-cpu-usage", cluster.PrometheusClusterAllPodCoreUsage)
 }
 
 func health(c *gin.Context) {

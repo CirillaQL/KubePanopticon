@@ -3,6 +3,7 @@ package node
 import (
 	"github.com/CirillaQL/kubepanopticon/pkg/client/k8s"
 	"github.com/CirillaQL/kubepanopticon/pkg/constant"
+	"github.com/CirillaQL/kubepanopticon/pkg/constant/errorcode"
 	"github.com/CirillaQL/kubepanopticon/pkg/service/cache/informer"
 	"github.com/CirillaQL/kubepanopticon/pkg/service/response"
 	"github.com/CirillaQL/kubepanopticon/utils/logger"
@@ -25,7 +26,7 @@ func List(c *gin.Context) {
 	nodeIndexInformer := informer.ResourceIndexInformerMap["node"]
 	if nodeIndexInformer == nil {
 		logger.Log.Error("can't get nodeIndexInformer, it is nil")
-		response.Response(c, constant.OK, nil, "nodeIndexInformer doesn't exist")
+		response.Response(c, errorcode.ErrNodeList, nil, "nodeIndexInformer doesn't exist")
 		return
 	}
 

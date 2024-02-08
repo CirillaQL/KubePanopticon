@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/CirillaQL/kubepanopticon/pkg/router"
 	"github.com/CirillaQL/kubepanopticon/pkg/service/cache/informer"
+	"github.com/CirillaQL/kubepanopticon/utils/config"
 	"github.com/CirillaQL/kubepanopticon/utils/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/go-logr/zapr"
@@ -17,7 +18,13 @@ func main() {
 	// Handle klog output
 	klog.SetLogger(zapr.NewLogger(logger.Log.Logger))
 
-	err := informer.InitInformer()
+	err := config.LoadConfig()
+	if err != nil {
+		logger.Log.Error("failed init config", zap.Error(err))
+		panic(err)
+	}
+
+	err = informer.InitInformer()
 	if err != nil {
 		logger.Log.Error("failed init informer", zap.Error(err))
 		panic(err)

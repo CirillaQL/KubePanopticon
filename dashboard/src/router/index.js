@@ -10,6 +10,11 @@ const routes = [
         path: "/nodes",
         name: "nodes",
         component: () => import("@/pages/Node/index.vue")
+    },
+    {
+        path: "/cluster",
+        name: "cluster",
+        component: () => import("@/pages/Cluster/index.vue")
     }
 ]
 

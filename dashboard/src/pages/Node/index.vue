@@ -14,7 +14,8 @@
             </TableCell>
             <TableCell>
               <div v-for="(status, statusIndex) in nodeItem.status" :key="'nodeItemStatus/'+statusIndex">
-                <Badge class="bg-green-500" v-if="status === 'Ready'">{{ status }}</Badge>
+                <Badge class="bg-green-500 m-0.5" v-if="status === 'Ready'">{{ status }}</Badge>
+                <Badge variant="destructive" class="m-0.5" v-else>{{ status }}</Badge>
               </div>
             </TableCell>
           </TableRow>
